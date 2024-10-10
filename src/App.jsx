@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
 import {
     WalletModalProvider,
     WalletDisconnectButton,
@@ -8,31 +9,25 @@ import {
 } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
 
+// Default styles that can be overridden by your app
 import '@solana/wallet-adapter-react-ui/styles.css';
-import { SendTokens } from './SendTokens';
-import { SignMessage } from './SignMessage';
+import { RequestAirdrop } from './RequestAirdrop';
+
 
 function App() {
-  const network = WalletAdapterNetwork.Devnet;
-
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
+ 
   return (
-      <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider wallets={[]} autoConnect>
-              <WalletModalProvider>
-                <div style={{ display: 'flex', justifyContent: "space-between" }}>
-                  <WalletMultiButton />
-                  <WalletDisconnectButton />
-                </div>
-                {/* <RequestAirdrop />
-                <ShowSolBalance /> */}
-                {/* <Tokens /> */}
-                <SignMessage />
-                <SendTokens />
-              </WalletModalProvider>
-          </WalletProvider>
-      </ConnectionProvider>
+    <ConnectionProvider endpoint={"https://api.devnet.solana.com/"}>
+    <WalletProvider wallets={[]} autoConnect>
+        <WalletModalProvider>
+          <div style={{width: "100vw",display:"flex",justifyContent:"center"}}>
+            <WalletMultiButton />
+            <WalletDisconnectButton />
+            <RequestAirdrop />
+            </div>
+        </WalletModalProvider>
+    </WalletProvider>
+</ConnectionProvider>
   );
 }
 
